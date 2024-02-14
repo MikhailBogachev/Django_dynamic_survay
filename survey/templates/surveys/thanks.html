@@ -1,0 +1,50 @@
+{% extends 'base.html'%}
+{% load my_custom_filters %}
+{% block content %}
+<h1>Результат</h1>
+<h2>Общее количество участников опроса: {{ cnt }}</h2>
+<h2>Вопросы: </h2>
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Текст вопроса</th>
+            <th scope="col">Кол-во ответивших</th>
+            <th scope="col">% от общего кол-ва участников опроса</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for question in questions %}
+          <tr>
+            <th scope="row">{{ question.row_rank }}</th>
+            <td><strong>{{ question.text }}</strong></td>
+            <td><strong>{{ question.count_users }}</strong></td>
+            <td><strong>{{ question.count_users|divide:cnt|multiply:100|floatformat }}</strong></td>
+          </tr>
+          <tr>
+
+            <td colspan="4"> Варианты ответа </td>
+
+            {% for choice in choices %}
+            <tr>
+            {% if choice.question_id == question.id %}
+                <td></td>
+                <td>
+                    {{ choice.text }}
+                </td>
+                <td>
+                    {{ choice.count_users }}
+                </td>
+                <td>
+                    {{ choice.count_users|divide:question.count_users|multiply:100|floatformat }}
+                </td>
+            {% endif %}
+            </tr>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+  </div>
+{% endblock %}

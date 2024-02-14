@@ -1,0 +1,46 @@
+{% load static %}
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'surveys:surveys' %}">Тесты</a>
+       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        {% with request.resolver_match.view_name as view_name %}
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <form action="{% url 'users:logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Выйти</button>
+          </form>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link">
+            Пользователь: {{ user.username }}
+          </a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link
+          {% if view_name  == 'users:login' %}
+            active
+          {% endif %}"
+          href="{% url 'users:login' %}"
+          >
+            Войти
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link
+          {% if view_name  == 'users:signup' %}
+            active
+          {% endif %}"
+          href="{% url 'users:signup' %}"
+          >
+            Регистрация
+          </a>
+        </li>
+        {% endif %}
+        {% endwith %}
+      </ul>
+    </div>
+  </nav>
+</header>

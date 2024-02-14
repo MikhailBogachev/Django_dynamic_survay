@@ -1,0 +1,13 @@
+{% extends 'base.html'%}
+{% block content %}
+<h1>{{ question.text }}
+<form action="{% url 'surveys:show_question' survey.id question.id %}" method="post">
+    {% csrf_token %}
+    {% for choice in question.choices.all %}
+        <br>
+        <label for="choice" >{{ choice.text }}</label><br>
+        <input type="radio" id="choice" value="{{ choice.id }}" name="choice"><br>
+    {% endfor %}
+    <input type="submit" value="Отправить">
+</form>
+{% endblock %}
